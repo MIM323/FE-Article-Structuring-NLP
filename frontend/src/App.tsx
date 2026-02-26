@@ -28,15 +28,15 @@ import {
 } from "lucide-react";
 import { ThemeProvider } from "./layout/ThemeProvider";
 
-function safeJson(obj: any) {
+const safeJson = (obj: any) => {
   try {
     return JSON.stringify(obj, null, 2);
   } catch {
     return "";
   }
-}
+};
 
-async function postJson(url: any, payload: any, signal: any) {
+const postJson = async (url: any, payload: any, signal: any) => {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -48,20 +48,21 @@ async function postJson(url: any, payload: any, signal: any) {
     throw new Error(text || `Request failed (${res.status})`);
   }
   return res.json();
-}
+};
 
-function toInfoboxWikitext(infobox: any) {
+const toInfoboxWikitext = (infobox: any) => {
   if (!infobox?.template) return "";
   const fields = infobox.fields || {};
   const lines = Object.entries(fields)
     .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== "")
     .map(([k, v]) => `| ${k} = ${String(v).trim()}`);
   return `{{${infobox.template}\n${lines.join("\n")}\n}}`;
-}
+};
 
-function buildWikitextFromStructure(structured: any) {
+const buildWikitextFromStructure = (structured: any) => {
   if (!structured) return "";
-  const parts = [];
+  const parts: string[] = [];
+
   if (structured.infobox) parts.push(toInfoboxWikitext(structured.infobox));
   if (structured.lead) parts.push(structured.lead.trim());
 
@@ -92,7 +93,7 @@ function buildWikitextFromStructure(structured: any) {
   }
 
   return parts.filter(Boolean).join("\n\n").trim() + "\n";
-}
+};
 
 const SAMPLE_INPUT = `Ada Lovelace (born 1815) was an English mathematician and writer, chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer, the Analytical Engine.\n\nShe was the first to recognise that the machine had applications beyond pure calculation, and published the first algorithm intended to be carried out by such a machine.\n\nLovelace was the only legitimate child of poet Lord Byron and was educated in mathematics and logic.`;
 
@@ -128,7 +129,8 @@ const MOCK_RESPONSE: StructuredArticle = {
   categories: ["1815 births", "1852 deaths", "English mathematicians"],
   references: [],
 };
-export default function App() {
+
+const App = () => {
   const [title, setTitle] = useState("");
   const [input, setInput] = useState(SAMPLE_INPUT);
   const [structured, setStructured] = useState<any>(null);
@@ -151,7 +153,7 @@ export default function App() {
     [structured],
   );
 
-  async function onStructure() {
+  const onStructure = async () => {
     setError("");
     setLoading(true);
     setStructured(null);
@@ -160,7 +162,7 @@ export default function App() {
     try {
       if (useMock) {
         await new Promise((r) => setTimeout(r, 450));
-        const mock = {
+        const mock: any = {
           ...MOCK_RESPONSE,
           title: title?.trim() || MOCK_RESPONSE.title,
           infobox: {
@@ -190,15 +192,15 @@ export default function App() {
     }
 
     return () => controller.abort();
-  }
+  };
 
-  async function copyToClipboard(text: any) {
+  const copyToClipboard = async (text: any) => {
     try {
       await navigator.clipboard.writeText(text);
     } catch {
       // ignore
     }
-  }
+  };
 
   return (
     <ThemeProvider defaultTheme="dark">
@@ -624,4 +626,6 @@ export default function App() {
       </div>
     </ThemeProvider>
   );
-}
+};
+
+export default App;
