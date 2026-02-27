@@ -175,7 +175,7 @@ const InputCard: React.FC<Props> = ({
               id="endpoint"
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
-              placeholder="/api/structure"
+              placeholder="http://127.0.0.1:8000/api/structure"
               className="mt-1 rounded-2xl"
               disabled={disabledEndpoint}
             />

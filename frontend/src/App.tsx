@@ -7,13 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Copy, Sparkles, Wand2, AlertTriangle, Braces } from "lucide-react";
+import { Wand2, AlertTriangle } from "lucide-react";
 
 import { ThemeProvider } from "./layout/ThemeProvider";
 import AppHeader from "./components/AppHeader";
@@ -29,6 +24,7 @@ const safeJson = (obj: any) => {
 };
 
 const postJson = async (url: string, payload: any, signal: AbortSignal) => {
+  console.log(payload);
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -129,7 +125,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [endpoint, setEndpoint] = useState("/api/structure");
+  const [endpoint, setEndpoint] = useState(
+    "http://127.0.0.1:8000/api/structure",
+  );
   const [generateWikitext, setGenerateWikitext] = useState(true);
   const [template, setTemplate] = useState("Infobox person");
   const [useMock, setUseMock] = useState(true);
